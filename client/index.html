@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Fonts: Goblin One for intro animation -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Markazi+Text&display=swap" rel="stylesheet">
+    <!-- Using local fonts from /public/fonts for main content -->
+    <title>Vite + React + TS</title>
+  </head>
+  <body style="margin: 0; padding: 0; background: #000;">
+    <!-- Netflix-style intro animation -->
+    <div id="netflix-intro" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9999;">
+      <div id="intro-text">DISHA JADHAV</div>
+      <div id="red-streak"></div>
+      <button id="skip-intro" style="display: none;">Skip Intro</button>
+      <button id="enable-sound" style="display: none;">🔊 Enable Sound</button>
+    </div>
+    
+    <!-- Audio element for Netflix "ta-dum" sound -->
+    <audio id="netflix-sound" preload="auto" muted>
+      <source src="/sounds/netflix-tadum.mp3" type="audio/mpeg">
+      <source src="/sounds/netflix-tadum.wav" type="audio/wav">
+    </audio>
+    
+    <!-- Main content wrapper -->
+    <div id="main-content" style="opacity: 0; visibility: hidden;">
+      <div id="root"></div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Netflix-style intro animation script -->
+    <script>
+      window.addEventListener('load', function() {
+        console.log('Netflix intro script starting...');
+        
+        const netflixIntro = document.getElementById('netflix-intro');
+        const introText = document.getElementById('intro-text');
+        const mainContent = document.getElementById('main-content');
+        const skipButton = document.getElementById('skip-intro');
+        const soundButton = document.getElementById('enable-sound');
+        const netflixSound = document.getElementById('netflix-sound');
+        
+        if (!netflixIntro || !introText || !mainContent) {
+          console.error('Required elements not found');
+          return;
+        }
+        
+        let soundEnabled = false;
+        // Clear session storage for testing (remove this line in production)
+        // sessionStorage.removeItem('netflix-intro-played');
+        let introPlayed = sessionStorage.getItem('netflix-intro-played') === 'true';
+        
+        console.log('Intro already played:', introPlayed);
+        
+        // Show skip button after 1 second
+        setTimeout(() => {
+          if (skipButton) skipButton.style.display = 'block';
+          if (soundButton) soundButton.style.display = 'block';
+        }, 1000);
+        
+        // Skip intro functionality
+        if (skipButton) {
+          skipButton.addEventListener('click', () => {
+            console.log('Skip intro clicked');
+            endIntro();
+          });
+        }
+        
+        // Enable sound functionality
+        if (soundButton) {
+          soundButton.addEventListener('click', () => {
+            soundEnabled = true;
+            if (netflixSound) {
+              netflixSound.muted = false;
+            }
+            soundButton.textContent = '🔊 Sound On';
+            soundButton.style.opacity = '0.7';
+          });
+        }
+        
+        function endIntro() {
+          console.log('Ending intro...');
+          mainContent.classList.add('visible');
+          sessionStorage.setItem('netflix-intro-played', 'true');
+          
+          setTimeout(() => {
+            netflixIntro.classList.add('hidden');
+          }, 200);
+          
+          setTimeout(() => {
+            netflixIntro.remove();
+          }, 1200);
+        }
+        
+        // If intro already played, skip it
+        if (introPlayed) {
+          console.log('Skipping intro - already played');
+          endIntro();
+          return;
+        }
+        
+        console.log('Starting Netflix intro animation...');
+        
+        // Netflix-style animation sequence
+        setTimeout(() => {
+          console.log('Text should appear now');
+        }, 500);
+        
+        setTimeout(() => {
+          console.log('Red streak should start now');
+        }, 4000);
+        
+        setTimeout(() => {
+          console.log('Streak impact moment...');
+          
+          if (soundEnabled && netflixSound) {
+            netflixSound.currentTime = 0;
+            netflixSound.play().catch(e => {
+              console.log('Audio autoplay prevented:', e);
+            });
+          }
+        }, 4800);
+        
+        setTimeout(() => {
+          console.log('Ending intro...');
+          endIntro();
+        }, 7000);
+      });
+    </script>
+  </body>
+</html>
