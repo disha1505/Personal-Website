@@ -47,7 +47,7 @@ type Project = {
   tagline?: string
 }
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:80'
+const API = import.meta.env.VITE_API_URL || 'https://personal-website-tdf0.onrender.com:80'
 
 export function Rows() {
   const [projects, setProjects] = useState<Project[]>([])
