@@ -26,8 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('tiny'));
 
-// Serve static files from the client's public directory
-app.use(express.static(path.join(__dirname, '../../client/public')));
+// Serve static files from the client's build directory
+app.use(express.static(path.join(__dirname, '../../client/dist')));
 
 const allowedOrigins = [
   '*',
@@ -69,6 +69,11 @@ app.use('/api/clicks', clickRoutes);
 app.use('/api/contacts', contactRoutes);
 app.use('/api/projects', projectRoutes);
 
+// For any other request, serve the index.html file from the client's build directory
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
+});
+
 const PORT = process.env.PORT || 80;
 
 connectToDatabase()
@@ -79,5 +84,3 @@ connectToDatabase()
     console.error('Failed to start server:', err);
     process.exit(1);
   });
-
-
