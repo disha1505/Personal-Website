@@ -10,7 +10,7 @@ type Visitor = {
   uniqueKey: string
 }
 
-const API = import.meta.env.VITE_API_URL || 'https://personal-website-tdf0.onrender.com:80'
+const API = import.meta.env.VITE_API_URL || 'https://personal-website-tdf0.onrender.com:4000'
 
 export function AdminPage() {
   const [visitors, setVisitors] = useState<Visitor[]>([])

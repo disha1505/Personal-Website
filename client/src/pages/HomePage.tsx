@@ -6,7 +6,7 @@ import { ContactForm } from '../components/ContactForm'
 export function HomePage() {
   useEffect(() => {
     // fire-and-forget visitor tracking
-    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:80'}/api/visitors/track`, {
+    fetch(`${import.meta.env.VITE_API_URL || 'https://personal-website-tdf0.onrender.com:4000'}/api/visitors/track`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ path: '/' }),
