@@ -29,6 +29,8 @@ async function submitContact(req, res) {
       userAgent: req.headers['user-agent'] || '',
     });
 
+    res.json({ ok: true, id: saved._id });
+
     try {
       const transporter = getTransporter();
       const from = process.env.SMTP_FROM || 'Portfolio <no-reply@example.com>';
@@ -41,8 +43,6 @@ async function submitContact(req, res) {
     } catch (mailErr) {
       console.warn('Email send failed', mailErr.message);
     }
-
-    res.json({ ok: true, id: saved._id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ ok: false, error: 'Failed to submit contact' });
@@ -55,5 +55,3 @@ async function listContacts(_req, res) {
 }
 
 module.exports = { submitContact, listContacts };
-
-
