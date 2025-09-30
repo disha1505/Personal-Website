@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { Mail, Phone, MapPin } from 'lucide-react'
 
-const API = import.meta.env.VITE_API_URL || 'https://personal-website-tdf0.onrender.com'
+const API = import.meta.env.VITE_API_URL || 'http://localhost:4000'
 
 export function ContactForm() {
   const [name, setName] = useState('')
@@ -20,6 +20,7 @@ export function ContactForm() {
         body: JSON.stringify({ name, email, message })
       })
       const data = await res.json()
+      console.log(data)
       if (!data.ok) throw new Error('Failed')
       setStatus('sent')
       setName(''); setEmail(''); setMessage('')

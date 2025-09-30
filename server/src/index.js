@@ -70,11 +70,9 @@ app.use('/api/contacts', contactRoutes);
 app.use('/api/projects', projectRoutes);
 
 // For any other request, serve the index.html file from the client's build directory
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
-});
 
-const PORT = process.env.PORT || 80;
+
+const PORT = process.env.PORT || 4000;
 
 connectToDatabase()
   .then(() => {
