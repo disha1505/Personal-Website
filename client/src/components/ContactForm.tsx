@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { Mail, Phone, MapPin } from 'lucide-react'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+const API = import.meta.env.VITE_API_URL || 'https://personal-website-tdf0.onrender.com'
 
 export function ContactForm() {
   const [name, setName] = useState('')
