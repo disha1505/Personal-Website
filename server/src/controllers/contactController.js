@@ -11,7 +11,7 @@ function getTransporter() {
   return nodemailer.createTransport({
     host,
     port,
-    secure: port === 465,
+    secure: port === false,
     auth: { user, pass },
   });
 }
@@ -29,20 +29,28 @@ async function submitContact(req, res) {
       userAgent: req.headers['user-agent'] || '',
     });
 
+    
+
     try {
       const transporter = getTransporter();
+      transporter.verify((error, success) => {
+        if (error) {
+          console.error('SMTP Error:', error);
+        } else {
+          console.log('SMTP is ready:', success);
+        }
+      });
       const from = process.env.SMTP_FROM || 'Portfolio <no-reply@example.com>';
       await transporter.sendMail({
         from,
         to: process.env.CONTACT_TO || process.env.SMTP_USER,
         subject: `Portfolio Contact: ${name}`,
         text: `From: ${name} <${email}>\nIP: ${req.requestIp}\n\n${message}`,
-      });
+      }); 
+      res.json({ ok: true, saved });
     } catch (mailErr) {
       console.warn('Email send failed', mailErr.message);
     }
-
-    res.json({ ok: true, id: saved._id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ ok: false, error: 'Failed to submit contact' });
@@ -55,5 +63,3 @@ async function listContacts(_req, res) {
 }
 
 module.exports = { submitContact, listContacts };
-
-
